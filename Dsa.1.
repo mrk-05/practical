@@ -1,0 +1,88 @@
+#include <iostream>
+using namespace std;
+
+#define max 10
+
+struct node {
+    long int mn;
+    node* next;
+};
+
+class telephone {
+    node* arr[max]; // Use the defined max
+public:
+    int hashfunction(long int);
+    void insert();
+    void display();
+    
+    telephone() {
+        for (int i = 0; i < max; i++) {
+            arr[i] = NULL;
+        }
+    }
+};
+
+int telephone::hashfunction(long int n) {
+    return (n % max);
+}
+
+void telephone::insert() {
+    long int num;
+    int ind;
+    cout << "Enter a telephone number: ";
+    cin >> num;
+    
+    node* nn = new node; // Create a new node
+    nn->mn = num;
+    nn->next = NULL;
+    
+    ind = hashfunction(nn->mn);
+    
+    if (arr[ind] == NULL) {
+        arr[ind] = nn; // Insert at the head
+    } else {
+        node* last = arr[ind]; // Start from the head
+        while (last->next != NULL) { // Traverse to the end
+            last = last->next;
+        }
+        last->next = nn; // Insert at the end
+    }
+}
+
+void telephone::display() {
+    for (int i = 0; i < max; i++) { // Iterate through the hash table
+        node* temp = arr[i];
+        if (temp != NULL) {
+            cout << "Index " << i << ": ";
+            while (temp != NULL) {
+                cout << temp->mn << " -> ";
+                temp = temp->next;
+            }
+            cout << "NULL" << endl; // End of the list
+        }
+    }
+}
+
+int main() {
+    telephone t;
+    int ch;
+    int ans;
+    do {
+        cout << "1. Insert\n2. Display\n";
+        cin >> ch;
+        switch (ch) {
+            case 1:
+                t.insert();
+                break;
+            case 2:
+                t.display();
+                break;
+            default:
+                cout << "Invalid entry" << endl;
+        }
+        cout << "Do you want to continue (1/0)? ";
+        cin >> ans;
+    } while (ans == 1);
+    
+    return 0;
+}
